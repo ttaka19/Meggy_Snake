@@ -46,6 +46,7 @@ struct Point
 };
 
 Point p1 = {3,4};
+int direction = 0;
 
 void setup()                    // run once, when the sketch starts
 {
@@ -54,15 +55,68 @@ void setup()                    // run once, when the sketch starts
 
 void loop()                     // run over and over again
 {
-  
-  DrawPx(p1.x,p1.y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
+  updateSnake();
+  drawSnake();           // Draw a dot at x=3, y=4, in yellow.
   DisplaySlate();                  // Write the drawing to the screen.
-  delay(1000);                  // waits for a second
-  
-  ClearSlate();                 // Erase drawing
-  DisplaySlate();                  // Write the (now empty) drawing to the screen.
-   
-  delay(1000);                  // waits for a second
+  delay(150);                  // waits for a second
+  ClearSlate();
+  CheckButtonsPress();
+    if (Button_Up)
+    {
+      direction = 0;
+    }
+    if (Button_Right)
+    {
+      direction = 90;
+    }
+    if (Button_Down)
+    {
+      direction = 180;
+    }
+    if (Button_Left)
+    {
+      direction = 270;
+    }
+}
+//Checks the direction and updates the x or y value.
+void updateSnake()
+{
+  if (direction == 0)
+  {
+    p1.y = p1.y + 1;      // Updates y.
+  }
+    if (p1.y >7)      // Corects for out-of-bounds.
+    {
+      p1.y = 0;
+    }
+  if (direction == 90)
+  {
+    p1.x = p1.x + 1;      // Updates y.
+  }
+    if (p1.x >7)      // Corects for out-of-bounds.
+    {
+      p1.x = 0;
+    }
+  if (direction == 180)
+  {
+    p1.y = p1.y - 1;      // Updates y.
+  }
+    if (p1.y <0)      // Corects for out-of-bounds.
+    {
+      p1.y = 7;
+    }
+  if (direction == 270)
+  {
+    p1.x = p1.x - 1;      // Updates y.
+  }
+    if (p1.x <0)      // Corects for out-of-bounds.
+    {
+      p1.x = 7;
+    }
 }
 
+void drawSnake()
+{
+  DrawPx(p1.x,p1.y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
+}
 
