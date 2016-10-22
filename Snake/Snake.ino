@@ -44,9 +44,12 @@ struct Point
   int x;
   int y;
 };
-
+int xapple = random(8);
+int yapple = random(8);
+boolean gotApple = false;
 Point p1 = {3,4};
 int direction = 0;
+int binary = 0;
 
 void setup()                    // run once, when the sketch starts
 {
@@ -56,7 +59,20 @@ void setup()                    // run once, when the sketch starts
 void loop()                     // run over and over again
 {
   updateSnake();
+  DrawPx(xapple,yapple,Red);
+  if (ReadPx(p1.x,p1.y) ==1)
+  {
+    Tone_Start(8000,300);
+    binary = binary * 2 + 1;
+    if (binary > 255)
+    {
+      binary = 1;
+    }
+    xapple = random(8);
+    yapple = random(8);
+  }
   drawSnake();           // Draw a dot at x=3, y=4, in yellow.
+  SetAuxLEDs(binary);
   DisplaySlate();                  // Write the drawing to the screen.
   delay(150);                  // waits for a second
   ClearSlate();
