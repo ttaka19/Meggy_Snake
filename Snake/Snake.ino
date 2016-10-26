@@ -1,5 +1,5 @@
 /*
-  MeggyJr_Snake.pde
+  MeggyJr_Snake by Trevor Taka
  
  Example file using the The Meggy Jr Simplified Library (MJSL)
   from the Meggy Jr RGB library for Arduino
@@ -39,7 +39,7 @@
 
 #include <MeggyJrSimple.h>    // Required code, line 1 of 2.
 
-struct Point
+struct Point //Declare structure
 {
   int x;
   int y;
@@ -47,7 +47,12 @@ struct Point
 int xapple = random(8);
 int yapple = random(8);
 boolean gotApple = false;
-Point p1 = {3,4};
+Point p1 = {2,4};  //Create points
+Point p2 = {3,4};
+Point p3 = {4,4};
+Point p4 = {5,4};
+Point snakeArray[64] = {p1,p2,p3,p4};
+int marker = 4;  //Index of the first empty segment of array
 int direction = 0;
 int binary = 0;
 
@@ -60,9 +65,8 @@ void loop()                     // run over and over again
 {
   updateSnake();
   DrawPx(xapple,yapple,Red);
-  if (ReadPx(p1.x,p1.y) ==1)
+  if (ReadPx(snakeArray[0].x,snakeArray[0].y) ==1)
   {
-    Tone_Start(8000,300);
     binary = binary * 2 + 1;
     if (binary > 255)
     {
@@ -97,42 +101,50 @@ void loop()                     // run over and over again
 //Checks the direction and updates the x or y value.
 void updateSnake()
 {
+  //Move body
+  for (int i = marker - 1; i > 0; i--)
+  {
+    snakeArray[i] = snakeArray [i - 1];
+  }
+  //Move head
   if (direction == 0)
   {
-    p1.y = p1.y + 1;      // Updates y.
+    snakeArray[0].y = snakeArray[0].y + 1;      // Updates y.
   }
-    if (p1.y >7)      // Corects for out-of-bounds.
+    if (snakeArray[0].y >7)      // Corects for out-of-bounds.
     {
-      p1.y = 0;
+      snakeArray[0].y = 0;
     }
   if (direction == 90)
   {
-    p1.x = p1.x + 1;      // Updates y.
+    snakeArray[0].x = snakeArray[0].x + 1;      // Updates y.
   }
-    if (p1.x >7)      // Corects for out-of-bounds.
+    if (snakeArray[0].x >7)      // Corects for out-of-bounds.
     {
-      p1.x = 0;
+      snakeArray[0].x = 0;
     }
   if (direction == 180)
   {
-    p1.y = p1.y - 1;      // Updates y.
+    snakeArray[0].y = snakeArray[0].y - 1;      // Updates y.
   }
-    if (p1.y <0)      // Corects for out-of-bounds.
+    if (snakeArray[0].y <0)      // Corects for out-of-bounds.
     {
-      p1.y = 7;
+      snakeArray[0].y = 7;
     }
   if (direction == 270)
   {
-    p1.x = p1.x - 1;      // Updates y.
+    snakeArray[0].x = snakeArray[0].x - 1;      // Updates y.
   }
-    if (p1.x <0)      // Corects for out-of-bounds.
+    if (snakeArray[0].x <0)      // Corects for out-of-bounds.
     {
-      p1.x = 7;
+      snakeArray[0].x = 7;
     }
 }
 
 void drawSnake()
+// iterate entire array
 {
-  DrawPx(p1.x,p1.y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
+  for (int i = 0; i < marker; i++)
+  DrawPx(snakeArray[i].x,snakeArray[i].y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
 }
 
