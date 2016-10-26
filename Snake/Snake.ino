@@ -55,6 +55,7 @@ Point snakeArray[64] = {p1,p2,p3,p4};
 int marker = 4;  //Index of the first empty segment of array
 int direction = 0;
 int binary = 0;
+int speed = 160;
 
 void setup()                    // run once, when the sketch starts
 {
@@ -70,15 +71,19 @@ void loop()                     // run over and over again
     binary = binary * 2 + 1;
     if (binary > 255)
     {
-      binary = 1;
+      binary = 0;
+      Tone_Start(10000,400);
+      speed = speed - 20;
     }
+    Tone_Start(8000,300);
     xapple = random(8);
     yapple = random(8);
+    gotApple = true;
   }
   drawSnake();           // Draw a dot at x=3, y=4, in yellow.
   SetAuxLEDs(binary);
   DisplaySlate();                  // Write the drawing to the screen.
-  delay(150);                  // waits for a second
+  delay(speed);                  // waits for a second
   ClearSlate();
   CheckButtonsPress();
     if (Button_Up)
@@ -147,4 +152,5 @@ void drawSnake()
   for (int i = 0; i < marker; i++)
   DrawPx(snakeArray[i].x,snakeArray[i].y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
 }
+
 
