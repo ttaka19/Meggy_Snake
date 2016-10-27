@@ -62,7 +62,8 @@ void setup()                    // run once, when the sketch starts
 void loop()                     // run over and over again
 {
   updateSnake();
-  checkEaten();
+  functionsApple();
+  checkDeath();
   drawSnake();           // Draw a dot at x=3, y=4, in yellow.
   SetAuxLEDs(binary);     //set top lights
   DisplaySlate();                  // Write the drawing to the screen.
@@ -140,27 +141,73 @@ void drawSnake() //draws snake
   DrawPx(snakeArray[i].x,snakeArray[i].y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
 }
 
-void checkEaten() //checks to see if apple eaten and does functions
+void functionsApple() //checks to see if apple eaten and does functions
 {
   DrawPx(xapple,yapple,Red);
-  if (ReadPx(snakeArray[0].x,snakeArray[0].y) == 1)
-  {
-    binary = binary * 2 + 1;
-    if (binary > 255)
+    if (ReadPx(snakeArray[0].x,snakeArray[0].y) == 1)
     {
-      binary = 0;
-      Tone_Start(10000,400); //plays tone
-      speed = speed - 20; //increases speed
+      binary = binary * 2 + 1;
+      if (binary > 255)
+      {
+        binary = 0;
+        Tone_Start(10000,400); //plays tone
+        speed = speed - 20; //increases speed
+      }
+      Tone_Start(8000,300); //plays tone
+      xapple = random(8); //randomize apple x coords
+      yapple = random(8); //randomize apple y coords
+      addSegment();
     }
-    Tone_Start(8000,300); //plays tone
-    xapple = random(8); //randomize apple x coords
-    yapple = random(8); //randomize apple y coords
-    addSegment();
-  }
 }
 
 void addSegment() //adds segment to snake
 {
   marker = marker + 1;
+}
+
+void checkDeath()
+{
+  for (int i = 1; i < marker; i++)
+  if ((snakeArray[0].x == snakeArray[i].x) && (snakeArray[0].y == snakeArray[i].y))
+  {
+    ClearSlate();
+    death();
+  }
+}
+void death() //if dead
+{
+  DrawPx(0,0,Red);
+  DrawPx(1,1,Red);
+  DrawPx(2,2,Red);
+  DrawPx(3,3,Red);
+  DrawPx(4,4,Red);
+  DrawPx(5,5,Red);
+  DrawPx(6,6,Red);
+  DrawPx(7,7,Red);
+  DrawPx(0,7,Red);
+  DrawPx(1,6,Red);
+  DrawPx(2,5,Red);
+  DrawPx(3,4,Red);
+  DrawPx(4,3,Red);
+  DrawPx(5,2,Red);
+  DrawPx(6,1,Red);
+  DrawPx(7,0,Red);
+  DisplaySlate();
+  delay(3000);
+  struct Point //Declare structure
+{
+  int x;
+  int y;
+};
+int xapple = random(8); //randomize x apple coords
+int yapple = random(8); //randomize y apple coords
+boolean gotApple = false;
+Point p1 = {2,4};  //Create point
+Point snakeArray[64] = {p1};
+int marker = 1;  //Index of the first empty segment of array
+int direction = 0; //set direction to north
+int binary = 0; //set default 0 lights on
+int speed = 160; //set default speed
+ClearSlate();
 }
 
