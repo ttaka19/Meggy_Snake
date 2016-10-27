@@ -47,14 +47,11 @@ struct Point //Declare structure
 int xapple = random(8); //randomize x apple coords
 int yapple = random(8); //randomize y apple coords
 boolean gotApple = false;
-Point p1 = {2,4};  //Create points
-Point p2 = {3,4};
-Point p3 = {4,4};
-Point p4 = {5,4};
-Point snakeArray[64] = {p1,p2,p3,p4};
-int marker = 4;  //Index of the first empty segment of array
+Point p1 = {2,4};  //Create point
+Point snakeArray[64] = {p1};
+int marker = 1;  //Index of the first empty segment of array
 int direction = 0; //set direction to north
-int binary = 1; //set default 0 lights on
+int binary = 0; //set default 0 lights on
 int speed = 160; //set default speed
 
 void setup()                    // run once, when the sketch starts
