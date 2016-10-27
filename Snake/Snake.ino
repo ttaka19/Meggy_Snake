@@ -44,8 +44,8 @@ struct Point //Declare structure
   int x;
   int y;
 };
-int xapple = random(8);
-int yapple = random(8);
+int xapple = random(8); //randomize x apple coords
+int yapple = random(8); //randomize y apple coords
 boolean gotApple = false;
 Point p1 = {2,4};  //Create points
 Point p2 = {3,4};
@@ -53,9 +53,9 @@ Point p3 = {4,4};
 Point p4 = {5,4};
 Point snakeArray[64] = {p1,p2,p3,p4};
 int marker = 4;  //Index of the first empty segment of array
-int direction = 0;
-int binary = 0;
-int speed = 160;
+int direction = 0; //set direction to north
+int binary = 1; //set default 0 lights on
+int speed = 160; //set default speed
 
 void setup()                    // run once, when the sketch starts
 {
@@ -65,45 +65,35 @@ void setup()                    // run once, when the sketch starts
 void loop()                     // run over and over again
 {
   updateSnake();
-  DrawPx(xapple,yapple,Red);
-  if (ReadPx(snakeArray[0].x,snakeArray[0].y) ==1)
-  {
-    binary = binary * 2 + 1;
-    if (binary > 255)
-    {
-      binary = 0;
-      Tone_Start(10000,400);
-      speed = speed - 20;
-    }
-    Tone_Start(8000,300);
-    xapple = random(8);
-    yapple = random(8);
-    gotApple = true;
-  }
+  checkEaten();
   drawSnake();           // Draw a dot at x=3, y=4, in yellow.
-  SetAuxLEDs(binary);
+  SetAuxLEDs(binary);     //set top lights
   DisplaySlate();                  // Write the drawing to the screen.
   delay(speed);                  // waits for a second
   ClearSlate();
-  CheckButtonsPress();
-    if (Button_Up)
-    {
-      direction = 0;
-    }
-    if (Button_Right)
-    {
-      direction = 90;
-    }
-    if (Button_Down)
-    {
-      direction = 180;
-    }
-    if (Button_Left)
-    {
-      direction = 270;
-    }
+  directionSnake();
 }
 //Checks the direction and updates the x or y value.
+void directionSnake()
+{
+  CheckButtonsPress(); //change direction
+      if (Button_Up)
+      {
+       direction = 0;
+      }
+      if (Button_Right)
+      {
+        direction = 90;
+      }
+      if (Button_Down)
+      {
+        direction = 180;
+      }
+      if (Button_Left)
+      {
+        direction = 270;
+      }
+}
 void updateSnake()
 {
   //Move body
@@ -146,11 +136,34 @@ void updateSnake()
     }
 }
 
-void drawSnake()
+void drawSnake() //draws snake
 // iterate entire array
 {
   for (int i = 0; i < marker; i++)
   DrawPx(snakeArray[i].x,snakeArray[i].y,Yellow);           // Draw a dot at x=3, y=4, in yellow.
 }
 
+void checkEaten() //checks to see if apple eaten and does functions
+{
+  DrawPx(xapple,yapple,Red);
+  if (ReadPx(snakeArray[0].x,snakeArray[0].y) == 1)
+  {
+    binary = binary * 2 + 1;
+    if (binary > 255)
+    {
+      binary = 0;
+      Tone_Start(10000,400); //plays tone
+      speed = speed - 20; //increases speed
+    }
+    Tone_Start(8000,300); //plays tone
+    xapple = random(8); //randomize apple x coords
+    yapple = random(8); //randomize apple y coords
+    addSegment();
+  }
+}
+
+void addSegment() //adds segment to snake
+{
+  marker = marker + 1;
+}
 
