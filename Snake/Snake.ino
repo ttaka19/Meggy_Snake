@@ -46,8 +46,8 @@ struct Point //Declare structure
 };
 int xapple = random(8); //randomize x apple coords
 int yapple = random(8); //randomize y apple coords
-boolean gotApple = false;
-boolean gameOver = false;
+boolean gotApple = false; //no apple yet
+boolean gameOver = false; //game not over
 Point p1 = {2,4};  //Create point
 Point snakeArray[64] = {p1};
 int marker = 1;  //Index of the first empty segment of array
