@@ -62,7 +62,7 @@ void setup()                    // run once, when the sketch starts
 
 void loop()                     // run over and over again
 {
-  if (gameOver == false)
+  if (gameOver == false) //do if gameOver, game is still going
   {
     updateSnake();
     functionsApple();
@@ -74,7 +74,7 @@ void loop()                     // run over and over again
     ClearSlate();
     directionSnake();
   }
-    else death();
+   else death(); //if game over do "death"
 }
 //Checks the direction and updates the x or y value.
 void directionSnake()
@@ -170,7 +170,7 @@ void addSegment() //adds segment to snake
   marker = marker + 1;
 }
 
-void checkDeath()
+void checkDeath() //check to see if snake collided with itself, killing it
 {
   for (int i = 1; i < marker; i++)
   if ((snakeArray[0].x == snakeArray[i].x) && (snakeArray[0].y == snakeArray[i].y))
@@ -181,7 +181,7 @@ void checkDeath()
 }
 void death() //if dead
 {
-  DrawPx(0,0,Red);
+  DrawPx(0,0,Red); //draw red x
   DrawPx(1,1,Red);
   DrawPx(2,2,Red);
   DrawPx(3,3,Red);
@@ -198,21 +198,5 @@ void death() //if dead
   DrawPx(6,1,Red);
   DrawPx(7,0,Red);
   DisplaySlate();
-  delay(3000);
-  struct Point //Declare structure
-{
-  int x;
-  int y;
-};
-int xapple = random(8); //randomize x apple coords
-int yapple = random(8); //randomize y apple coords
-boolean gotApple = false;
-Point p1 = {2,4};  //Create point
-Point snakeArray[64] = {p1};
-int marker = 1;  //Index of the first empty segment of array
-int direction = 0; //set direction to north
-int binary = 0; //set default 0 lights on
-int speed = 160; //set default speed
-ClearSlate();
 }
 
