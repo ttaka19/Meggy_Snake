@@ -47,6 +47,7 @@ struct Point //Declare structure
 int xapple = random(8); //randomize x apple coords
 int yapple = random(8); //randomize y apple coords
 boolean gotApple = false;
+boolean gameOver = false;
 Point p1 = {2,4};  //Create point
 Point snakeArray[64] = {p1};
 int marker = 1;  //Index of the first empty segment of array
@@ -61,15 +62,19 @@ void setup()                    // run once, when the sketch starts
 
 void loop()                     // run over and over again
 {
-  updateSnake();
-  functionsApple();
-  checkDeath();
-  drawSnake();           // Draw a dot at x=3, y=4, in yellow.
-  SetAuxLEDs(binary);     //set top lights
-  DisplaySlate();                  // Write the drawing to the screen.
-  delay(speed);                  // waits for a second
-  ClearSlate();
-  directionSnake();
+  if (gameOver == false)
+  {
+    updateSnake();
+    functionsApple();
+    checkDeath();
+    drawSnake();           // Draw a dot at x=3, y=4, in yellow.
+    SetAuxLEDs(binary);     //set top lights
+    DisplaySlate();                  // Write the drawing to the screen.
+    delay(speed);                  // waits for a second
+    ClearSlate();
+    directionSnake();
+  }
+    else death();
 }
 //Checks the direction and updates the x or y value.
 void directionSnake()
@@ -171,7 +176,7 @@ void checkDeath()
   if ((snakeArray[0].x == snakeArray[i].x) && (snakeArray[0].y == snakeArray[i].y))
   {
     ClearSlate();
-    death();
+    gameOver = true;
   }
 }
 void death() //if dead
